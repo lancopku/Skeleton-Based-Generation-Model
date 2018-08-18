@@ -115,7 +115,7 @@ def setup_training_generator(model):
   #tf.get_variable_scope().reuse_variables()
 
   # Load an initial checkpoint to use for decoding
-  #util.load_ckpt(saver, sess, ckpt_dir="train-generator")
+  util.load_ckpt(saver, sess, ckpt_dir="train-generator")
 
 
   return sess, saver,train_dir
@@ -134,7 +134,7 @@ def setup_training_srl_generator(model):
   #tf.get_variable_scope().reuse_variables()
 
   # Load an initial checkpoint to use for decoding
-  #util.load_ckpt(saver, sess, ckpt_dir="train-srl-generator")
+  util.load_ckpt(saver, sess, ckpt_dir="train-srl-generator")
 
   return sess, saver,train_dir
 
@@ -150,7 +150,7 @@ def setup_training_sc_generator(model):
   sess = tf.Session(config=util.get_config())
   init = tf.global_variables_initializer()
   sess.run(init)
-  #util.load_ckpt(saver, sess, ckpt_dir="train-sc-generator")
+  util.load_ckpt(saver, sess, ckpt_dir="train-sc-generator")
 
   #tf.get_variable_scope().reuse_variables()
 
@@ -218,9 +218,6 @@ def run_pre_train_generator(model, batcher, max_run_epoch, sess, saver, train_di
                 loss_window = 0.0
             if train_step % 10000 == 0:
                 saver.save(sess, train_dir + "/model", global_step=train_step)
-                if not os.path.exists("to_srl_max_generated/"): os.mkdir("to_srl_max_generated/")
-                if not os.path.exists("to_srl_max_generated/validation/"): os.mkdir("to_srl_max_generated/validation/")
-                if not os.path.exists("to_srl_max_generated/test/"): os.mkdir("to_srl_max_generated/test/")
                 generated.generator_max_example(batcher.get_batches("validation"), "to_srl_max_generated/valid/"+str(int(train_step / 10000))+"_positive", "to_srl_max_generated/valid/"+str(int(train_step / 10000))+"_negative")
                 generated.generator_max_example(batcher.get_batches("test"),
                                                   "to_srl_max_generated/test/" + str(int(train_step / 10000)) + "_positive",
@@ -258,13 +255,6 @@ def run_pre_train_srl_generator(model, batcher, srl_batcher, max_run_epoch, sess
                 loss_window = 0.0
             if train_step % 30000 == 0:
                 saver.save(sess, train_dir + "/model", global_step=train_step)
-                
-                if not os.path.exists("to_seq_max_generated/"): os.mkdir("to_seq_max_generated/")
-                if not os.path.exists("max_generated_final/"): os.mkdir("max_generated_final/")
-                if not os.path.exists("to_seq_max_generated/test/"): os.mkdir("to_seq_max_generated/test/")
-                if not os.path.exists("max_generated_final/test/"): os.mkdir("max_generated_final/test/")
-                if not os.path.exists("to_seq_max_generated/valid/"): os.mkdir("to_seq_max_generated/valid/")
-                if not os.path.exists("max_generated_final/valid/"): os.mkdir("max_generated_final/valid/")
                 generated.generator_max_example(srl_batcher.get_batches("validation"), "to_seq_max_generated/valid/"+str(int(train_step / 30000))+"_positive", "to_seq_max_generated/valid/"+str(int(train_step / 30000))+"_negative")
                 generated.generator_max_example(srl_batcher.get_batches("test"),
                                                   "to_seq_max_generated/test/" + str(int(train_step / 30000)) + "_positive",
@@ -310,9 +300,6 @@ def run_pre_train_sc_generator(model, batcher, max_run_epoch, sess, saver, train
                 loss_window = 0.0
             if train_step % 1000 == 0:
                 saver.save(sess, train_dir + "/model", global_step=train_step)
-                if not os.path.exists("to_sc_max_generated/"): os.mkdir("to_sc_max_generated/")
-                if not os.path.exists("to_sc_max_generated/valid/"): os.mkdir("to_sc_max_generated/valid/")
-                if not os.path.exists("to_sc_max_generated/test/"): os.mkdir("to_sc_max_generated/test/")
                 generated.generator_max_example(batcher.get_batches("validation"),
                                                 "to_sc_max_generated/valid/" + str(
                                                     int(train_step / 1000)) + "_positive",
@@ -502,28 +489,28 @@ def main(unused_argv):
         sess_sc, saver_sc, train_dir_sc = setup_training_sc_generator(sc_model)
         sc_generated = Generated_sc_sample(sc_model, vocab, sess_sc)
         print("Start pre-training generator......")
-        run_pre_train_sc_generator(sc_model, sc_batcher, 40, sess_sc, saver_sc, train_dir_sc, sc_generated)
-
-        if not os.path.exists("data/" + str(0) + "/"): os.mkdir("data/" + str(0) + "/")
-        sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-train"),
-        
-                                         "data/" + str(
-                                             0) + "/train_skeleton.txt")
-        
-        sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-valid"),
-        
-                                            "data/" + str(
-                                                0) + "/valid_skeleton.txt")
-
-        sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-test"),
-        
-                                            "data/" + str(
-                                                0) + "/test_skeleton.txt")
+        #run_pre_train_sc_generator(sc_model, sc_batcher, 40, sess_sc, saver_sc, train_dir_sc, sc_generated)
 
 
-        merge("data/story/train_process.txt", "data/0/train_skeleton.txt", "data/0/train.txt")
-        merge("data/story/validation_process.txt", "data/0/valid_skeleton.txt", "data/0/valid.txt")
-        merge("data/story/test_process.txt", "data/0/test_skeleton.txt", "data/0/test.txt")
+        # sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-train"),
+        #
+        #                                 "data/" + str(
+        #                                     0) + "/train_skeleton.txt")
+        #
+        # sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-valid"),
+        #
+        #                                    "data/" + str(
+        #                                        0) + "/valid_skeleton.txt")
+        #
+        # sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-test"),
+        #
+        #                                    "data/" + str(
+        #                                        0) + "/test_skeleton.txt")
+
+
+        #merge("data/story/train_process.txt", "data/0/train_skeleton.txt", "data/0/train.txt")
+        #merge("data/story/validation_process.txt", "data/0/valid_skeleton.txt", "data/0/valid.txt")
+        #merge("data/story/test_process.txt", "data/0/test_skeleton.txt", "data/0/test.txt")
 
 
         #################################################################################################
@@ -535,7 +522,7 @@ def main(unused_argv):
         sess_ge, saver_ge, train_dir_ge = setup_training_generator(model)
         generated = Generated_sample(model, vocab, sess_ge)
         print("Start pre-training generator......")
-        run_pre_train_generator(model, batcher, 30, sess_ge, saver_ge, train_dir_ge, generated)
+        #run_pre_train_generator(model, batcher, 30, sess_ge, saver_ge, train_dir_ge, generated)
         ##################################################################################################
         srl_generator_model = Srl_Generator(hps_srl_generator, vocab)
 
@@ -545,7 +532,8 @@ def main(unused_argv):
         srl_generated = Generated_srl_sample(srl_generator_model, vocab, sess_srl_ge)
         whole_generated = Generated_whole_sample(model, srl_generator_model, vocab, sess_ge, sess_srl_ge, batcher, srl_batcher)
         print("Start pre-training srl_generator......")
-        run_pre_train_srl_generator(srl_generator_model, batcher,srl_batcher, 20, sess_srl_ge, saver_srl_ge, train_dir_srl_ge, srl_generated, whole_generated)
+        #run_pre_train_srl_generator(srl_generator_model, batcher,srl_batcher, 20, sess_srl_ge, saver_srl_ge, train_dir_srl_ge,
+        #                        srl_generated, whole_generated)
 
         loss_window = 0
         t0 = time.time()
