@@ -1,5 +1,5 @@
 # Skeleton-Based-Generation-Model
-Code for "A Skeleton-Based Model for Promoting Coherence Among Sentences in Narrative Story Generation" 
+The Code for "A Skeleton-Based Model for Promoting Coherence Among Sentences in Narrative Story Generation" 
 ## Requirements
 * ubuntu 16.04
 * python 3.5
@@ -11,10 +11,10 @@ Code for "A Skeleton-Based Model for Promoting Coherence Among Sentences in Narr
 
 ## The Processed Data
 * Compression dataset:
-Since the original dataset is too large, we only use a subset of this dataset. The processed data can be found at data/trainfeature02.json, data/testfeature02.json, data/validfeature02.json
+Since the original dataset is too large, we only use a subset of this dataset. The processed data can be found at data/trainfeature02.json, data/testfeature02.json, data/validfeature02.json.
 
 * Storytelling dataset:
-The dataset is listed at data/story/train_process.txt, data/story/valid_process.txt, data/story/test_process.txt
+The dataset is listed at data/story/train_process.txt, data/story/valid_process.txt, data/story/test_process.txt.
 
 ## Method Details
  1. First, we pre-train a sentence compression module. 
