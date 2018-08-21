@@ -115,7 +115,7 @@ def setup_training_generator(model):
   #tf.get_variable_scope().reuse_variables()
 
   # Load an initial checkpoint to use for decoding
-  util.load_ckpt(saver, sess, ckpt_dir="train-generator")
+  #util.load_ckpt(saver, sess, ckpt_dir="train-generator")
 
 
   return sess, saver,train_dir
@@ -489,28 +489,28 @@ def main(unused_argv):
         sess_sc, saver_sc, train_dir_sc = setup_training_sc_generator(sc_model)
         sc_generated = Generated_sc_sample(sc_model, vocab, sess_sc)
         print("Start pre-training generator......")
-        #run_pre_train_sc_generator(sc_model, sc_batcher, 40, sess_sc, saver_sc, train_dir_sc, sc_generated)
+        run_pre_train_sc_generator(sc_model, sc_batcher, 40, sess_sc, saver_sc, train_dir_sc, sc_generated)
 
 
-        # sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-train"),
-        #
-        #                                 "data/" + str(
-        #                                     0) + "/train_skeleton.txt")
-        #
-        # sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-valid"),
-        #
-        #                                    "data/" + str(
-        #                                        0) + "/valid_skeleton.txt")
-        #
-        # sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-test"),
-        #
-        #                                    "data/" + str(
-        #                                        0) + "/test_skeleton.txt")
+        sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-train"),
+        
+                                         "data/" + str(
+                                             0) + "/train_skeleton.txt")
+        
+        sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-valid"),
+        
+                                            "data/" + str(
+                                                0) + "/valid_skeleton.txt")
+        
+        sc_generated.generator_max_example_test(sc_batcher.get_batches("pre-test"),
+        
+                                            "data/" + str(
+                                                0) + "/test_skeleton.txt")
 
 
-        #merge("data/story/train_process.txt", "data/0/train_skeleton.txt", "data/0/train.txt")
-        #merge("data/story/validation_process.txt", "data/0/valid_skeleton.txt", "data/0/valid.txt")
-        #merge("data/story/test_process.txt", "data/0/test_skeleton.txt", "data/0/test.txt")
+        merge("data/story/train_process.txt", "data/0/train_skeleton.txt", "data/0/train.txt")
+        merge("data/story/validation_process.txt", "data/0/valid_skeleton.txt", "data/0/valid.txt")
+        merge("data/story/test_process.txt", "data/0/test_skeleton.txt", "data/0/test.txt")
 
 
         #################################################################################################
